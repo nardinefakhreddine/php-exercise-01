@@ -1,0 +1,85 @@
+body{
+    padding: 0;
+   margin: 0;
+   width: 100%;
+   background-image: url("108105038-old-grey-eco-drawing-paper-kraft-background-texture-in-soft-white-light-color-concept-for-page-wallp.jpg");
+}
+/*header css*/
+header{
+    margin-top: 10px;
+   background-color:transparent;
+   height: 100px;
+   font-style: italic;
+   font-weight: bold;
+   color: lightslategrey;
+   font-size: 30px;
+}
+
+/*fin header css*/
+
+#content{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+ 
+}
+form{
+    padding: 20px;
+}
+.title {
+text-align: center;
+font-style:italic ;
+padding-top: 0px;
+
+}
+form div{
+    padding: 5px;
+    margin: 10px;
+ color: lightseagreen;
+    
+}
+form input{
+    width: 300px;
+    display: block;
+    padding: 5px;
+}
+.register , .login{
+    border: 1px solid grey;
+    border-radius: 50px;
+    box-shadow: -2px -2px 2px 2px #b2deec , 2px 2px 2px 2px #b2deec;
+}
+.submit{
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    font-style: italic;
+    color: grey;
+}
+.submit:hover{
+   background-color: lightseagreen;
+   color: white;
+}
+
+input:focus{
+    border:1px solid grey;
+}
+.error{
+    font-style: italic;
+    color:red;
+    font-size: 10px;
+}
+.footer{
+  
+   font-style: italic;
+    text-align: center;
+    color:grey;
+ }
+/*safe php css*/
+ #container{
+margin: 0 auto;
+padding: 20px;
+text-align: center;
+border: 1px solid grey;
+background-color: red;
+
+}
