@@ -106,7 +106,7 @@ if (empty($formError)){
     <td><?php if ($payment=="yearly"){
         echo $salary;
     }else {
-        echo $salary/12;
+        echo $salary*12;
     } ?> $</td>
 
 </tr>
