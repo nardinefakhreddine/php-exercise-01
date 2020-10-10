@@ -29,7 +29,7 @@ $formError=array();
             $user_error=" * username is required";
             $formError[]=$user_error;
         }else{
-            $username=$_POST['username'];
+            $username=test_input($_POST['username']);
         }if(!preg_match('/^[a-zA-Z ]*\.[a-zA-Z ]*$/', $username)){
             $user_error="* only letters and White space allowed !";
             $formError[]=$user_error;
@@ -39,7 +39,7 @@ $formError=array();
             $password_error=" * password is required";
             $formError[]=$password_error;
         }else{
-            $password=$_POST['password'];
+            $password=test_input($_POST['password']);
         }
             if(!($_POST['password']==$_POST['c-password'])){
                 $pass_match="* Password not match";
