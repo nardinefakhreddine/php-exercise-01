@@ -14,26 +14,11 @@ foreach($value as $i=>$values){
 }
 
 
-//Sorting the multidimensional associative array by the genres: <br />";
-function compare($x, $y)
-{ 
-if ( $x[1] == $y[1] )
-return 0;
-else if ( $x[1] > $y[1] )
-return -1;
-else
-return 1;
-}
-function compare2($x2, $y2) {
-if ($x[2] == $y[2])
-return 0;
-elseif ($x[2] > $y[2])
-return -1;
-else
-return 1;
-}
-usort($data, 'compare');
-usort($data, 'compare2');
+//sort the array in decreasing order by genre.
+
+
+krsort($data);
+
 echo "Printing the multidimensional associative array sorted: <br>";
 foreach($data as $x => $value){
     echo $x."<br>";
