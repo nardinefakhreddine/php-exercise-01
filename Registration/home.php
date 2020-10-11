@@ -38,10 +38,10 @@ $formError=array();
         if(empty($_POST['password'])){
             $password_error=" * password is required";
             $formError[]=$password_error;
-        }else if(strlen($_POST['password'])<6) {
+        }else if(strlen($_POST['password'])<=6) {
             $password_error=" * password must be minimum 6 characters";
             $formError[]=$password_error;
-            
+        
         }
           else{
             $password=test_input($_POST['password']);
