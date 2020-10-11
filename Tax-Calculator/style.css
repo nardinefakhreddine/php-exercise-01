@@ -2,6 +2,7 @@ body{
     background-image: url("mode-demploi-de-la-comptabilite-dengagement-1346495.jpg");
     background-repeat: no-repeat;
    background-size: cover;
+   margin: 0;
    
 }
 header h3{
@@ -71,4 +72,6 @@ td, th {
       font-style: italic;
       font-size: 15px;
   }
-  
+  input{
+      background-color: lightslategray;
+  }

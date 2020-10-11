@@ -1,5 +1,6 @@
 
 <?php
+include 'function.php';
     $salary=$payment=$tax_free= "";
      
     $salary_error=$payment_error=$tax_error= "";
@@ -24,8 +25,9 @@ $formError=array();
         $payment=$_POST['payment'];
     }
     if(empty($_POST['tax-free'])){
-         $tax_error="*required";
-         $formError=$tax_error;
+         $tax_free=$_POST['tax-free'];
+         $tax_free=0;
+        
     }
     else if (!is_numeric($_POST['tax-free'])){
         $tax_error="you must to enter a number";
@@ -59,15 +61,15 @@ $formError=array();
 
 <div>
 <span id="salar"><label for="salary"> Salary In USD :</label></span>
-<input type="text" id="salary" name="salary"><br>
+<input type="text" id="salary" name="salary" value="<?php echo $salary;?>"><br>
 <span class="error"><?php echo $salary_error; ?></span>
 </div>
 
 <div>
-<input type="radio" id="monthly" name="payment" value="monthly">
+<input type="radio" id="monthly" name="payment" value="monthly" <?php  if($payment=="monthly"){echo 'checked';}?>>
 <label for="monthly"> Monthly</label>
 
-<input type="radio" id="yearly" name="payment" value="yearly">
+<input type="radio" id="yearly" name="payment" value="yearly" <?php  if($payment=="yearly"){echo 'checked';}?>>
 <label for="yearly">Yearly</label><br>
 <span class="error"><?php echo $payment_error;?></span>
 
@@ -75,7 +77,7 @@ $formError=array();
 
 <div>
 <span><label for="tax-free"> Tax Free Allowance in USD :</label></span>
-<span><input type="text" id="tax-free" name="tax-free"></span><br>
+<span><input type="text" id="tax-free" name="tax-free" value="<?php echo $tax_free;?>"></span><br>
 <span class="error"><?php echo $tax_error;?></span>
 </div>
 
@@ -101,43 +103,47 @@ if (empty($formError)){
     <td><?php if ($payment=="monthly"){
         echo $salary;
     }else {
-        echo $salary/12;
+        $monthly=salary_monthly($salary);
+        echo $monthly;
     } ?> $</td>
     <td><?php if ($payment=="yearly"){
         echo $salary;
     }else {
-        echo $salary*12;
+        $yearly= salary_yearly($salary);
+        echo $yearly;
     } ?> $</td>
 
 </tr>
 <tr>
 <td>Tax amount</td>
     <td><?php 
+    //monthly
     if($payment=="monthly"){
-        $salary=$salary*12;
-        if($salary<10000){
-            echo 0;
+        $yearly= salary_yearly($salary);
+       if($yearly<10000){
+           echo 0;
+       }else if($yearly>=10000 && $yearly<=25000){
+           echo ceil($yearly*0.11/12);
+       }else if($yearly>25000 && $yearly<50000){
+           echo ceil($yearly*0.3/12);
+       }else if($yearly>=50000){
+           echo ceil($yearly*0.45/12);
+       }
+
         }
-        else if(10000 < $salary && $salary < 25000){
-            echo ($salary*0.11)/12;
-        }else if(25000 < $salary && $salary< 50000){
-            echo ($salary*0.3)/12;
-        }else if($salary >= 50000){
-            echo ($salary*0.45)/12;
-        }
-    }else{
-        if($salary<10000){
-            echo 0;
-        }
-        else if(10000 < $salary && $salary < 25000){
-            echo ($salary*0.11)/12;;
-        }else if(25000 < $salary && $salary< 50000){
-            echo ($salary*0.3)/12;
-        }else if($salary >= 50000){
-            echo  ($salary*0.45)/12;
-        } 
-    }
     
+    else{
+      if($salary<10000){
+          echo 0;
+      }else if($salary>=10000 && $salary<=25000){
+          echo ceil($salary*0.11/12);
+      }else if($salary>25000 && $salary<50000){
+          echo ceil($salary*0.3/12);
+      }else if($salary>=50000){
+          echo ceil($salary*0.45/12);
+      }
+    }
+  
     
     ?>
 
@@ -145,39 +151,43 @@ if (empty($formError)){
 
 
    $ </td>
-    <td><?php if($payment=="yearly") {
+   
+    <td><!--yearly-->
+    <?php
+    if($payment=="yearly"){
         if($salary<10000){
             echo 0;
-        }
-        else if(10000 < $salary && $salary < 25000){
+        }else if($salary>=10000 && $salary<=25000){
             echo $salary*0.11;
-        }else if(25000 < $salary && $salary< 50000){
+        }else if($salary>25000 && $salary<50000){
             echo $salary*0.3;
-        }else if($salary >= 50000){
+        }else if($salary>=50000){
             echo $salary*0.45;
         }
-        
     }else{
-        $salary=$salary*12;
-        if($salary<10000){
+        $yearly= salary_yearly($salary);
+        if($yearly<10000){
             echo 0;
+        }else if($yearly>=10000 && $yearly<=25000){
+            echo $yearly*0.11;
+        }else if($yearly>25000 && $yearly<50000){
+            echo $yearly*0.3;
+        }else if($yearly>=50000){
+            echo $yearly*0.45;
         }
-        else if(10000 < $salary && $salary < 25000){
-            echo $salary*0.11;
-        }else if(25000 < $salary && $salary< 50000){
-            echo $salary*0.3;
-        }else if($salary >= 50000){
-            echo $salary*0.45;
-        }
+
+
     }
-    ?>$</td>
+
+    ?>
+   $</td>
 </tr>
 <tr>
 <td>Social security fee</td>
     <td><?php if($payment=="monthly"){
-             $salary=$salary*12;
-             if($salary>10000){
-                 echo ($salary/12)*0.4;
+              $yearly=salary_yearly($salary);
+             if($yearly>10000){
+                 echo ($salary*0.4);
              }else{
                  echo 0;
              }
@@ -185,7 +195,8 @@ if (empty($formError)){
     }
     else{
         if($salary>10000){
-            echo ($salary/12)*0.4;
+            $monthly=salary_monthly($salary);
+            echo $monthly*0.4;
         }else{
             echo 0;
         }
@@ -194,16 +205,17 @@ if (empty($formError)){
   <?php  
   if($payment=="yearly"){
     if($salary>10000){
-        echo (($salary/12)*0.4 )*12;
+        $monthly=salary_monthly($salary);
+        echo ($monthly*0.4 )*12;
     }else{
         echo 0;
     }
 
 
   }else{
-      $salary=$salary*12;
-    if($salary>10000){
-        echo (($salary/12)*0.4 )*12;
+    $yearly=salary_yearly($salary);
+    if($yearly>10000){
+        echo ($salary*0.4 )*12;
     }else{
         echo 0;
     }
@@ -215,67 +227,69 @@ if (empty($formError)){
 <tr>
     <td> Salary after tax</td>
     <td><?php
-    if($payment=="monthly"){
-       $salary=$salary*12;
-       if($salary<10000){
-        echo ($salary/12)+$tax_free;
-    }
-    else if(10000 < $salary && $salary < 25000){
-        echo ($salary/12-(($salary*0.11)/12))+$tax_free;
-    }else if(25000 < $salary && $salary< 50000){
-        echo ($salary/12-(($salary*0.3)/12))+$tax_free;
-    }else if($salary >= 50000){
-        echo ($salary/12-(($salary*0.45)/12))+$tax_free;
+   //monthly
+   if($payment=="monthly"){
+    $yearly= salary_yearly($salary);
+   if($yearly<10000){
+       echo 0;
+   }else if($yearly>=10000 && $yearly<=25000){
+       echo ($salary+$tax_free)-ceil($yearly*0.11/12);
+   }else if($yearly>25000 && $yearly<50000){
+       echo ($salary+$tax_free)-ceil($yearly*0.3/12);
+   }else if($yearly>=50000){
+       echo ($salary+$tax_free)-ceil($yearly*0.45/12);
+   }
+
     }
 
-    }else{
-        if($salary<10000){
-            echo ($salary/12)+$tax_free;
-        }
-        else if(10000 < $salary && $salary < 25000){
-            echo ($salary/12-(($salary*0.11)/12))+$tax_free;
-        }else if(25000 < $salary && $salary< 50000){
-            echo ($salary/12-(($salary*0.3)/12))+$tax_free;
-        }else if($salary >= 50000){
-            echo ($salary/12-(($salary*0.45)/12))+$tax_free;
-        }
-    }
+else{
+    $tax=floor($tax_free/12);
+    $monthly=salary_monthly($salary);
+  if($salary<10000){
+      
+      echo 0;
+  }else if($salary>=10000 && $salary<=25000){
+      echo ($monthly+$tax)-ceil($salary*0.11/12);
+  }else if($salary>25000 && $salary<50000){
+      echo ($monthly+$tax)-ceil($salary*0.3/12);
+  }else if($salary>=50000){
+      echo ($monthly+$tax)-ceil($salary*0.45/12);
+  }
+}
+
+   
     ?>
 
 
 $</td>
 <td>
- <?php   if($payment=="yearly"){
-
-       if($salary<10000){
-        echo $salary+$tax_free;
+<?php 
+  if($payment=="yearly"){
+    if($salary<10000){
+        echo 0;
+    }else if($salary>=10000 && $salary<=25000){
+        echo ($salary+$tax_free)-$salary*0.11;
+    }else if($salary>25000 && $salary<50000){
+        echo ($salary+$tax_free)-$salary*0.3;
+    }else if($salary>=50000){
+        echo ($salary+$tax_free)-$salary*0.45;
+    }
+}else{
+    $yearly= salary_yearly($salary);
+    if($yearly<10000){
+        echo 0;
+    }else if($yearly>=10000 && $yearly<=25000){
+        echo ($yearly+$tax_free)-$yearly*0.11;
+    }else if($yearly>25000 && $yearly<50000){
+        echo ($yearly+$tax_free)-$yearly*0.3;
+    }else if($yearly>=50000){
+        echo ($yearly+$tax_free)-$yearly*0.45;
     }
 
-    else if(10000 < $salary && $salary < 25000){
-        echo ($salary-($salary*0.11))+$tax_free;
-    }
-    else if(25000 < $salary && $salary< 50000){
-        echo ($salary-($salary*0.3))+$tax_free;
-    }
-    else if($salary >= 50000){
-        echo ($salary-($salary*0.45))+$tax_free;
-    }
 
-     }
-     else
-     {$salary=$salary*12;
-        if($salary<10000){
-            echo $salary+$tax_free;
-        }
-        else if(10000 < $salary && $salary < 25000){
-            echo ($salary-($salary*0.11))+$tax_free;
-        }else if(25000 < $salary && $salary< 50000){
-            echo( $salary-($salary*0.3))+$tax_free;
-        }else if($salary >= 50000){
-            echo ($salary-($salary*0.45))+$tax_free;
-        }   } 
-     ?>$
-</td>
+}
+?>
+$</td>
 </tr>
 </table>
 </div>
