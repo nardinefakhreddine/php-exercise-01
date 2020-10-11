@@ -19,7 +19,7 @@ $formError=array();
             $fullname=test_input($_POST['fullname']);
             
         }
-        if(!preg_match('/^[a-zA-Z ]*\.[a-zA-Z ]*$/', $fullname)){
+        if(!preg_match("/^[a-zA-Z-' ]*$/", $fullname)){
            $name_error="* only letters and White space allowed !";
            $formError[]=$name_error;
         }
@@ -30,7 +30,7 @@ $formError=array();
             $formError[]=$user_error;
         }else{
             $username=test_input($_POST['username']);
-        }if(!preg_match('/^[a-zA-Z ]*\.[a-zA-Z ]*$/', $username)){
+        }if(!preg_match("/^[a-zA-Z-' ]*$/", $username)){
             $user_error="* only letters and White space allowed !";
             $formError[]=$user_error;
          }
@@ -38,35 +38,38 @@ $formError=array();
         if(empty($_POST['password'])){
             $password_error=" * password is required";
             $formError[]=$password_error;
-        }else{
-            $password=test_input($_POST['password']);
+        }else if(strlen($_POST['password'])<6) {
+            $password_error=" * password must be minimum 6 characters";
+            $formError[]=$password_error;
+            
         }
+          else{
+            $password=test_input($_POST['password']);
+          }
             if(!($_POST['password']==$_POST['c-password'])){
                 $pass_match="* Password not match";
                 $formError[]=$pass_error;
             }
         
-      
+        $tel=test_input($_POST['tel']);
         if(empty($_POST['tel'])){
             $tel_error=" * telephone number is required";
             $formError[]=$tel_error;
-        }else{
-            $tel=test_input($_POST['tel']);
-        } if(!preg_match('/^[0-9]*$/',$tel)){
+        }else if(!preg_match('/^[0-9]*$/',$_POST['tel'])){
             $tel_error="*  tel must be number ";
             $formError[]=$tel_error;
+        }else{
+        $tel=test_input($_POST['tel']);
         }
-        
-     
+        $email=test_input($_POST['email']);
         if(empty($_POST['email'])){
             $email_error=" * Email is required";
             $formError[]=$email_error;
-        }else{
-            $email=test_input($_POST['email']);
-        }
-        if(!filter_var($email,FILTER_VALIDATE_EMAIL)){
+        }else if(!filter_var($email,FILTER_VALIDATE_EMAIL)){
             $email_error="* the email must be contain @gmail.com";
             $formError[]=$email_error;
+        }else{
+            $email=test_input($_POST['email']);
         }
 
         if(empty($_POST['date'])){
@@ -74,21 +77,32 @@ $formError=array();
             $formError[]=$date_error;
         }else{
             $date=$_POST['date'];
-        }
-        //if(!preg_match('/^(0?\d|[12]\d|3[01])-(0?\d|1[012])-((?:19|20)\d{2})$/', $date)){
+        
+        $test_arr  = explode('/', $date);
+        
+        
+if (count($test_arr) == 3) {
+   
+  if (checkdate($test_arr[0], $test_arr[1], $test_arr[2])) {
+       $date=$_POST['date'];
+    } else {
+       $date_error="* date must be format mm/dd/yyy";
+        $formError[]=$date_error;
+    }
+} 
+      }      //if(!preg_match('/^(0?\d|[12]\d|3[01])-(0?\d|1[012])-((?:19|20)\d{2})$/', $date)){
           //  $date_error="* invalid date form !";
           //  $formError[]=$date_error;
         // }
-
+        $ssn=test_input($_POST['ssn']);
         if(empty($_POST['ssn'])){
             $ssn_error=" * SSN is required";
             $formError[]=$ssn_error;
-        }else{
-            $ssn=$_POST['ssn'];
-        }
-        if(!preg_match('/^[0-9]*$/',$ssn)){
+        }else if(!preg_match('/^[0-9]*$/',$ssn)){
             $ssn_error="*  SSN must be number";
             $formError[]=$ssn_error;
+        }else{
+            $ssn=test_input($_POST['ssn']);
         }
         if(empty($formError)){
             echo"
@@ -109,6 +123,7 @@ $formError=array();
         return $data;
         
             }
+            
     
   ?>
 <header>
@@ -116,7 +131,7 @@ $formError=array();
 </header>
 <div id="content">
 <div class="register">
-<form method="post" name="register" action=<?php echo $_SERVER["PHP_SELF"];?> class="form-register">
+<form method="post" name="register" action="#" class="form-register">
     <div class="title"><h1> Registration &hearts;</h1></div>
 <div>
 <label for="fullname">Full Name: </label>
@@ -149,7 +164,7 @@ $formError=array();
 </div>
 <div>
 <label for="date">Date Of Birth: </label>
-<input type="date" name="date" id="date" placeholder="Date of Birth" />
+<input type="text" name="date" id="date" placeholder="mm/dd/yyy" />
 <span class="error"><?php echo $date_error; ?></span>
 </div>
 <div>
