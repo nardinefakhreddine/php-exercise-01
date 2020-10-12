@@ -187,7 +187,7 @@ if (empty($formError)){
     <td><?php if($payment=="monthly"){
               $yearly=salary_yearly($salary);
              if($yearly>10000){
-                 echo ($salary*0.4);
+                 echo ($salary*0.04);
              }else{
                  echo 0;
              }
@@ -196,7 +196,7 @@ if (empty($formError)){
     else{
         if($salary>10000){
             $monthly=salary_monthly($salary);
-            echo $monthly*0.4;
+            echo $monthly*0.04;
         }else{
             echo 0;
         }
@@ -206,7 +206,7 @@ if (empty($formError)){
   if($payment=="yearly"){
     if($salary>10000){
         $monthly=salary_monthly($salary);
-        echo ($monthly*0.4 )*12;
+        echo ($monthly*0.04 )*12;
     }else{
         echo 0;
     }
@@ -215,7 +215,7 @@ if (empty($formError)){
   }else{
     $yearly=salary_yearly($salary);
     if($yearly>10000){
-        echo ($salary*0.4 )*12;
+        echo ($salary*0.04 )*12;
     }else{
         echo 0;
     }
