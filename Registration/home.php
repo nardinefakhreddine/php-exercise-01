@@ -7,7 +7,7 @@
 </head>
 <body>
     <?php
-    $fullname=$username=$password=$c_password=$tel=$date=$email=$ssn=" ";
+    $fullname=$username=$password=$c_password=$tel=$date=$email=$ssn="";
      
 $name_error=$user_error=$password_error=$pass_match=$tel_error=$email_error=$date_error=$ssn_error=" ";
 $formError=array();
